@@ -1,8 +1,10 @@
 /**
  * Vercel Serverless API — Comments
  *
- * Storage: Vercel KV (Redis) when KV_REST_API_URL is set,
- * otherwise falls back to in-memory (resets on cold start).
+ * Storage priority:
+ * 1. Upstash Redis (Vercel Marketplace): UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN
+ * 2. Legacy Vercel KV: KV_REST_API_URL + KV_REST_API_TOKEN
+ * 3. In-memory fallback (resets on cold start)
  *
  * GET  /api/comments           → all comments
  * GET  /api/comments?taskId=x  → comments for a specific task
@@ -13,46 +15,66 @@
 // --- In-memory fallback ---
 let memoryComments = [];
 
-// --- KV helpers ---
-let kv = null;
+// --- Redis client (cached) ---
+let redis = null;
+let redisAttempted = false;
 
-async function getKV() {
-  if (kv) return kv;
+function getRedisEnv() {
+  // Prefer Upstash Marketplace env vars
+  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return { url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN };
+  }
+  // Fall back to legacy Vercel KV env vars
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-    try {
-      const vercelKV = require('@vercel/kv');
-      kv = vercelKV.createClient({
-        url: process.env.KV_REST_API_URL,
-        token: process.env.KV_REST_API_TOKEN,
-      });
-      return kv;
-    } catch (e) {
-      console.warn('KV init failed, using in-memory:', e.message);
-      return null;
-    }
+    return { url: process.env.KV_REST_API_URL, token: process.env.KV_REST_API_TOKEN };
   }
   return null;
 }
 
-const KV_KEY = 'timeline-comments';
+function getRedis() {
+  if (redis) return redis;
+  if (redisAttempted) return null;
+  redisAttempted = true;
+
+  const env = getRedisEnv();
+  if (!env) return null;
+
+  try {
+    // @upstash/redis is the current recommended package
+    const { Redis } = require('@upstash/redis');
+    redis = new Redis({ url: env.url, token: env.token });
+    return redis;
+  } catch (_) {
+    try {
+      // Fall back to @vercel/kv if installed
+      const vercelKV = require('@vercel/kv');
+      redis = vercelKV.createClient({ url: env.url, token: env.token });
+      return redis;
+    } catch (e) {
+      console.warn('Redis init failed, using in-memory:', e.message);
+      return null;
+    }
+  }
+}
+
+const REDIS_KEY = 'timeline-comments';
 
 async function getAllComments() {
-  const store = await getKV();
+  const store = getRedis();
   if (store) {
-    const data = await store.get(KV_KEY);
+    const data = await store.get(REDIS_KEY);
     return Array.isArray(data) ? data : [];
   }
   return memoryComments;
 }
 
 async function saveComment(comment) {
-  const store = await getKV();
+  const store = getRedis();
   if (store) {
     const existing = await getAllComments();
     existing.push(comment);
-    // Cap at 500 comments
     const trimmed = existing.slice(-500);
-    await store.set(KV_KEY, trimmed);
+    await store.set(REDIS_KEY, trimmed);
     return;
   }
   memoryComments.push(comment);
@@ -96,7 +118,6 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      // Rate limit
       const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
       if (!checkRate(ip)) {
         return res.status(429).json({ error: 'Too many comments. Please wait a moment.' });
@@ -104,7 +125,6 @@ module.exports = async function handler(req, res) {
 
       const { name, text, taskId } = req.body || {};
 
-      // Validate
       if (!name || typeof name !== 'string' || name.trim().length === 0) {
         return res.status(400).json({ error: 'Name is required.' });
       }

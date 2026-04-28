@@ -17,7 +17,7 @@ Interactive Gantt chart + comment board for tracking The Station Food Market pro
 
 - **Frontend**: Vanilla HTML / CSS / JS (no framework)
 - **Backend**: Vercel Serverless Function (`/api/comments`)
-- **Storage**: Vercel KV (Redis) for persistent comments; in-memory fallback if KV not configured
+- **Storage**: Upstash Redis (via Vercel Marketplace) for persistent comments; in-memory fallback if not configured
 - **Hosting**: Vercel
 
 ## Setup
@@ -30,18 +30,24 @@ npm i -g vercel
 vercel
 ```
 
-### 2. Enable Persistent Comments (Vercel KV)
+### 2. Enable Persistent Comments (Upstash Redis)
 
-1. Go to **Vercel Dashboard → Your Project → Storage**
-2. Click **Create Database → KV (Durable Redis)**
-3. Follow the setup — Vercel auto-injects `KV_REST_API_URL` and `KV_REST_API_TOKEN` env vars
-4. Redeploy (or it may auto-redeploy)
+Without Redis, comments work immediately but use in-memory storage that resets on serverless cold starts (~minutes of inactivity). To make comments persist permanently:
 
-Without KV, comments use in-memory storage (resets on serverless cold starts).
+1. Go to **Vercel Dashboard → Your Project → Storage** tab
+2. Click **Browse Storage** or **Create Database**
+3. Select **Upstash Redis** (under Marketplace, or via [Upstash integration](https://vercel.com/integrations/upstash))
+4. Create a new Redis database (free tier is fine)
+5. Connect it to your project — Vercel auto-injects `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` env vars
+6. **Redeploy** the project (Settings → Deployments → Redeploy, or push any commit)
+
+After redeploy, comments persist across all users and sessions. No code changes needed.
+
+> **Legacy note:** The API also supports the old `KV_REST_API_URL` / `KV_REST_API_TOKEN` env var names if you have an existing Vercel KV setup.
 
 ### 3. Update Timeline Data
 
-Edit `data/timeline.json` and push. The data structure is:
+Edit `public/data/timeline.json` and push. The data structure is:
 
 ```json
 {
@@ -56,15 +62,14 @@ Edit `data/timeline.json` and push. The data structure is:
 
 ```
 ├── public/
-│   ├── index.html          # Main page
-│   ├── css/style.css       # All styles
-│   └── js/app.js           # Gantt renderer + comments UI
+│   ├── index.html              # Main page
+│   ├── css/style.css           # All styles
+│   ├── js/app.js               # Gantt renderer + comments UI
+│   └── data/timeline.json      # Timeline source data (v1)
 ├── api/
-│   └── comments.js         # Serverless comment API
-├── data/
-│   └── timeline.json       # Timeline source data (v1)
-├── package.json            # @vercel/kv dependency
-├── vercel.json             # Routing + headers
+│   └── comments.js             # Serverless comment API
+├── package.json                # @upstash/redis dependency
+├── vercel.json                 # Headers config
 └── README.md
 ```
 
