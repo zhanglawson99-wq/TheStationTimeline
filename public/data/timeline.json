@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v1.1",
+    "version": "v1.2",
     "updated": "2026-04-28",
     "project": "The Station Food Market",
     "projectZh": "The Station Food Market",
@@ -95,15 +95,26 @@
       "notesZh": "如现场准备就绪，NRA展会后开始。除非影响施工，否则与卫生部门资料包分开处理。"
     },
     {
-      "id": "equipment-order",
-      "label": "Equipment selection & ordering",
-      "labelZh": "设备选型及订购",
+      "id": "equipment-selection",
+      "label": "Equipment selection / PRF spec direction",
+      "labelZh": "设备选型 / PRF规格方向",
       "category": "procurement",
       "start": "2026-04-28",
+      "end": "2026-05-15",
+      "critical": true,
+      "notes": "Determine equipment selection and spec direction by May 15 for the PRF/landlord rectification plan. Includes: existing equipment to remain/remove/reposition, new/replacement equipment categories, major specs and models where available, utility and connection implications (plumbing, electrical, gas, ventilation). Dishwasher decision included.",
+      "notesZh": "5月15日前确定设备选型和规格方向，用于PRF/房东整改方案。包括：现有设备保留/移除/重新布置、新/替换设备类别、主要规格型号（如有）、水电气通风等连接影响。含洗碗机决定。"
+    },
+    {
+      "id": "equipment-ordering",
+      "label": "Equipment ordering",
+      "labelZh": "设备订购",
+      "category": "procurement",
+      "start": "2026-05-20",
       "end": "2026-05-31",
       "critical": true,
-      "notes": "Finalize all major equipment selections. Confirm specs, model numbers, lead times. All equipment must be ordered by May 31. Includes dishwasher decision.",
-      "notesZh": "确定所有主要设备选型。确认规格、型号、交期。所有设备须在5月31日前订购。含洗碗机决定。"
+      "notes": "Convert PRF-approved equipment selection into final purchase orders by May 31. Confirm model numbers, lead times, delivery requirements, and vendor payment terms. Starts after NRA Show.",
+      "notesZh": "将PRF批准的设备选型转化为最终采购订单，5月31日前完成。确认型号、交期、配送要求和供应商付款条件。NRA展会后开始。"
     },
     {
       "id": "china-freight",
@@ -230,7 +241,7 @@
   "milestones": [
     { "id": "ms-bank",        "date": "2026-05-08", "label": "Company bank account open",           "labelZh": "公司银行账户开通",                "critical": true  },
     { "id": "ms-china-order", "date": "2026-05-10", "label": "China furniture/materials ordered",    "labelZh": "国内家具/材料已下单",              "critical": true  },
-    { "id": "ms-prf-utils",   "date": "2026-05-15", "label": "PRF plan submitted + utilities done",  "labelZh": "PRF方案已提交 + 公用事业已完成",   "critical": false },
+    { "id": "ms-prf-utils",   "date": "2026-05-15", "label": "PRF plan + equipment spec direction + accounts done",  "labelZh": "PRF方案 + 设备规格方向 + 账户已完成",   "critical": true  },
     { "id": "ms-nra",         "date": "2026-05-16", "label": "NRA Show begins",                     "labelZh": "NRA展会开始",                     "critical": false },
     { "id": "ms-equip-menu",  "date": "2026-05-31", "label": "All equipment ordered + full menu draft done","labelZh": "全部设备已订购 + 完整菜单初稿完成",  "critical": true  },
     { "id": "ms-pkg-ready",   "date": "2026-06-10", "label": "Health dept package internally ready", "labelZh": "卫生部门资料包内部完成",           "critical": true  },
