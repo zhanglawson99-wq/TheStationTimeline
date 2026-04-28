@@ -1,29 +1,133 @@
 /* ============================================
    The Station — Interactive Timeline App
+   with ZH/EN language toggle
    ============================================ */
 
 (function () {
   'use strict';
 
-  // --- State ---
+  // ========== i18n ==========
+  const strings = {
+    zh: {
+      projectTimeline: '项目时间线',
+      timelineVersion: '时间线 {version} — 更新于 {date}',
+      today: '今天：{date}',
+      taskHeader: '任务',
+      criticalPath: '关键路径',
+      milestone: '里程碑',
+      todayLabel: '今天',
+      days: '{n} 天',
+      daysUnit: '天',
+      commentsTitle: '备注与评论',
+      commentsNotice: '评论对项目团队可见，请使用真实姓名。',
+      namePlaceholder: '你的名字',
+      commentPlaceholder: '添加备注或评论...',
+      globalCommentPlaceholder: '项目总体评论...',
+      postComment: '发表评论',
+      posting: '提交中...',
+      noComments: '暂无评论。',
+      loading: '加载中...',
+      allComments: '所有项目评论',
+      footer: 'The Station Food Market · 项目时间线 · 内部使用',
+      re: '关于：',
+      criticalBadge: '⚠ 关键路径',
+      todayMarker: '今天',
+      langToggle: '<span class="lang-active">中文</span> / EN'
+    },
+    en: {
+      projectTimeline: 'Project Timeline',
+      timelineVersion: 'Timeline {version} — updated {date}',
+      today: 'Today: {date}',
+      taskHeader: 'Task',
+      criticalPath: 'Critical Path',
+      milestone: 'Milestone',
+      todayLabel: 'Today',
+      days: '{n} days',
+      daysUnit: 'days',
+      commentsTitle: 'Notes & Comments',
+      commentsNotice: 'Comments are visible to the project team. Please use your real name.',
+      namePlaceholder: 'Your name',
+      commentPlaceholder: 'Add a note or comment...',
+      globalCommentPlaceholder: 'General project comment...',
+      postComment: 'Post Comment',
+      posting: 'Posting...',
+      noComments: 'No comments yet.',
+      loading: 'Loading...',
+      allComments: 'All Project Comments',
+      footer: 'The Station Food Market · Project Timeline · Internal Use',
+      re: 'Re: ',
+      criticalBadge: '⚠ Critical Path',
+      todayMarker: 'TODAY',
+      langToggle: '中文 / <span class="lang-active">EN</span>'
+    }
+  };
+
+  let lang = localStorage.getItem('timeline-lang') || 'zh';
+
+  function t(key, params) {
+    let s = (strings[lang] && strings[lang][key]) || (strings.en[key]) || key;
+    if (params) {
+      Object.keys(params).forEach(k => {
+        s = s.replace('{' + k + '}', params[k]);
+      });
+    }
+    return s;
+  }
+
+  /** Get localized field from a data object. Falls back to English field. */
+  function tl(obj, field) {
+    if (lang === 'zh' && obj[field + 'Zh']) return obj[field + 'Zh'];
+    return obj[field] || '';
+  }
+
+  function applyStaticI18n() {
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      el.placeholder = t(el.dataset.i18nPlaceholder);
+    });
+    // Language toggle button
+    const toggleBtn = document.getElementById('langToggle');
+    if (toggleBtn) toggleBtn.innerHTML = t('langToggle');
+  }
+
+  // ========== State ==========
   let timeline = null;
   let activeTaskId = null;
 
-  // --- Constants ---
+  // ========== Constants ==========
   const DAY_MS = 86400000;
 
-  // --- Helpers ---
+  // ========== Helpers ==========
   function parseDate(str) { return new Date(str + 'T00:00:00'); }
   function daysBetween(a, b) { return Math.round((b - a) / DAY_MS); }
+
   function formatDate(d) {
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const locale = lang === 'zh' ? 'zh-CN' : 'en-US';
+    return d.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
   }
   function formatShort(d) {
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const locale = lang === 'zh' ? 'zh-CN' : 'en-US';
+    return d.toLocaleDateString(locale, { month: 'short', day: 'numeric' });
   }
+  function formatMonthYear(d) {
+    const locale = lang === 'zh' ? 'zh-CN' : 'en-US';
+    return d.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
+  }
+
   function formatRelative(ts) {
     const diff = Date.now() - new Date(ts).getTime();
     const mins = Math.floor(diff / 60000);
+    if (lang === 'zh') {
+      if (mins < 1) return '刚刚';
+      if (mins < 60) return mins + '分钟前';
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return hrs + '小时前';
+      const days = Math.floor(hrs / 24);
+      return days + '天前';
+    }
     if (mins < 1) return 'just now';
     if (mins < 60) return mins + 'm ago';
     const hrs = Math.floor(mins / 60);
@@ -34,17 +138,17 @@
 
   const root = document.documentElement;
   const DAY_W = parseInt(getComputedStyle(root).getPropertyValue('--day-w')) || 28;
-  const ROW_H = parseInt(getComputedStyle(root).getPropertyValue('--row-h')) || 40;
 
-  // --- Load timeline data ---
+  // ========== Load & Render ==========
   async function loadTimeline() {
     const res = await fetch('/data/timeline.json');
     timeline = await res.json();
     renderAll();
   }
 
-  // --- Render everything ---
   function renderAll() {
+    applyStaticI18n();
+
     const { meta, categories, tasks, milestones } = timeline;
     const rangeStart = parseDate(meta.dateRange.start);
     const rangeEnd = parseDate(meta.dateRange.end);
@@ -52,69 +156,73 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Header meta
-    document.getElementById('versionBadge').textContent = `Timeline ${meta.version} — updated ${meta.updated}`;
-    document.getElementById('todayBadge').textContent = `Today: ${formatDate(today)}`;
+    // Header
+    document.getElementById('versionBadge').textContent = t('timelineVersion', { version: meta.version, date: meta.updated });
+    document.getElementById('todayBadge').textContent = t('today', { date: formatDate(today) });
 
-    // Legend
+    // Legend categories
     const legendEl = document.getElementById('legendCategories');
     legendEl.innerHTML = categories.map(c =>
-      `<span class="legend-item"><span class="legend-swatch" style="background:${c.color}"></span>${c.label}</span>`
+      `<span class="legend-item"><span class="legend-swatch" style="background:${c.color}"></span>${tl(c, 'label')}</span>`
     ).join('');
 
-    // Build combined rows: tasks + milestones interleaved by date
+    // Legend extras
+    const extrasEl = document.querySelector('.legend-extras');
+    if (extrasEl) {
+      extrasEl.innerHTML = `
+        <span class="legend-item"><span class="legend-icon legend-icon--critical"></span> ${t('criticalPath')}</span>
+        <span class="legend-item"><span class="legend-icon legend-icon--milestone"></span> ${t('milestone')}</span>
+        <span class="legend-item"><span class="legend-icon legend-icon--today"></span> ${t('todayLabel')}</span>
+      `;
+    }
+
+    // Combined rows
     const rows = [];
     tasks.forEach(t => rows.push({ type: 'task', data: t, sortDate: parseDate(t.start) }));
     milestones.forEach(m => rows.push({ type: 'milestone', data: m, sortDate: parseDate(m.date) }));
     rows.sort((a, b) => a.sortDate - b.sortDate || (a.type === 'milestone' ? 1 : -1));
 
-    // Remove duplicate milestones that match task ends
-    // (keep milestones as visual markers but don't duplicate labels)
-
-    // --- Render Labels ---
+    // --- Labels ---
     const labelsEl = document.getElementById('ganttLabels');
-    labelsEl.innerHTML = '<div class="gantt-label-header">Task</div>';
+    labelsEl.innerHTML = `<div class="gantt-label-header">${t('taskHeader')}</div>`;
 
     rows.forEach(row => {
       if (row.type === 'task') {
-        const t = row.data;
-        const cat = categories.find(c => c.id === t.category);
+        const tk = row.data;
+        const cat = categories.find(c => c.id === tk.category);
         const el = document.createElement('div');
         el.className = 'gantt-label-row';
-        el.dataset.id = t.id;
+        el.dataset.id = tk.id;
         el.innerHTML = `
           <span class="gantt-label-dot" style="background:${cat ? cat.color : '#666'}"></span>
-          <span class="gantt-label-text">${t.label}</span>
-          ${t.critical ? '<span class="gantt-label-critical">●</span>' : ''}
+          <span class="gantt-label-text">${tl(tk, 'label')}</span>
+          ${tk.critical ? '<span class="gantt-label-critical">●</span>' : ''}
         `;
-        el.addEventListener('click', () => openDetail(t.id));
+        el.addEventListener('click', () => openDetail(tk.id));
         labelsEl.appendChild(el);
       } else {
         const m = row.data;
         const el = document.createElement('div');
         el.className = 'gantt-label-row milestone-row';
-        el.innerHTML = `<span class="gantt-label-text">◆ ${m.label}</span>`;
+        el.innerHTML = `<span class="gantt-label-text">◆ ${tl(m, 'label')}</span>`;
         labelsEl.appendChild(el);
       }
     });
 
-    // --- Render Chart Header ---
+    // --- Chart Header ---
     const headerEl = document.getElementById('ganttHeader');
     const chartWidth = totalDays * DAY_W;
     headerEl.style.width = chartWidth + 'px';
     headerEl.innerHTML = '';
 
-    // Month labels
     let currentMonth = -1;
     for (let i = 0; i < totalDays; i++) {
       const d = new Date(rangeStart.getTime() + i * DAY_MS);
       if (d.getMonth() !== currentMonth) {
         currentMonth = d.getMonth();
-        const monthLabel = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
         const monthEl = document.createElement('div');
         monthEl.className = 'gantt-month';
         monthEl.style.left = (i * DAY_W) + 'px';
-        // Calculate width to end of month
         let monthEnd = i;
         while (monthEnd < totalDays) {
           const dd = new Date(rangeStart.getTime() + monthEnd * DAY_MS);
@@ -122,11 +230,10 @@
           monthEnd++;
         }
         monthEl.style.width = ((monthEnd - i) * DAY_W) + 'px';
-        monthEl.textContent = monthLabel;
+        monthEl.textContent = formatMonthYear(d);
         headerEl.appendChild(monthEl);
       }
 
-      // Day numbers
       const dayEl = document.createElement('div');
       dayEl.className = 'gantt-day';
       if (d.getDay() === 0 || d.getDay() === 6) dayEl.classList.add('weekend');
@@ -135,12 +242,11 @@
       headerEl.appendChild(dayEl);
     }
 
-    // --- Render Chart Body ---
+    // --- Chart Body ---
     const bodyEl = document.getElementById('ganttBody');
     bodyEl.style.width = chartWidth + 'px';
     bodyEl.innerHTML = '';
 
-    // Weekend columns (full height)
     for (let i = 0; i < totalDays; i++) {
       const d = new Date(rangeStart.getTime() + i * DAY_MS);
       if (d.getDay() === 0 || d.getDay() === 6) {
@@ -151,30 +257,29 @@
       }
     }
 
-    // Rows
     rows.forEach(row => {
       const rowEl = document.createElement('div');
 
       if (row.type === 'task') {
-        const t = row.data;
-        const cat = categories.find(c => c.id === t.category);
-        const startDay = daysBetween(rangeStart, parseDate(t.start));
-        const endDay = daysBetween(rangeStart, parseDate(t.end));
+        const tk = row.data;
+        const cat = categories.find(c => c.id === tk.category);
+        const startDay = daysBetween(rangeStart, parseDate(tk.start));
+        const endDay = daysBetween(rangeStart, parseDate(tk.end));
         const barLeft = startDay * DAY_W;
         const barWidth = (endDay - startDay + 1) * DAY_W;
 
         rowEl.className = 'gantt-row';
 
         const bar = document.createElement('div');
-        bar.className = 'gantt-bar' + (t.critical ? ' critical' : '');
+        bar.className = 'gantt-bar' + (tk.critical ? ' critical' : '');
         bar.style.left = barLeft + 'px';
         bar.style.width = barWidth + 'px';
         bar.style.background = cat ? cat.color : '#666';
-        bar.dataset.id = t.id;
-        bar.textContent = t.label;
+        bar.dataset.id = tk.id;
+        bar.textContent = tl(tk, 'label');
 
-        bar.addEventListener('click', () => openDetail(t.id));
-        bar.addEventListener('mouseenter', (e) => showTooltip(e, t));
+        bar.addEventListener('click', () => openDetail(tk.id));
+        bar.addEventListener('mouseenter', (e) => showTooltip(e, tk));
         bar.addEventListener('mouseleave', hideTooltip);
 
         rowEl.appendChild(bar);
@@ -189,7 +294,7 @@
         diamond.className = 'gantt-milestone' + (m.critical ? ' critical' : '');
         diamond.style.left = msLeft + 'px';
 
-        diamond.addEventListener('mouseenter', (e) => showTooltip(e, { label: m.label, start: m.date, end: m.date, notes: '' }));
+        diamond.addEventListener('mouseenter', (e) => showTooltip(e, { label: m.label, labelZh: m.labelZh, start: m.date, end: m.date, notes: '', notesZh: '' }));
         diamond.addEventListener('mouseleave', hideTooltip);
 
         rowEl.appendChild(diamond);
@@ -204,6 +309,7 @@
       const todayLine = document.createElement('div');
       todayLine.className = 'gantt-today';
       todayLine.style.left = (todayOffset * DAY_W + DAY_W / 2) + 'px';
+      todayLine.dataset.label = t('todayMarker');
       bodyEl.appendChild(todayLine);
     }
 
@@ -212,14 +318,18 @@
     const targetScroll = Math.max(0, todayOffset * DAY_W - scrollEl.clientWidth / 3);
     scrollEl.scrollLeft = targetScroll;
 
-    // Sync label scroll with gantt body (vertical)
-    // Not needed since we don't have vertical scroll in this layout
+    // If detail panel is open, re-render it
+    if (activeTaskId && panelEl.classList.contains('open')) {
+      openDetail(activeTaskId);
+    }
 
-    // Load global comments
     loadGlobalComments();
+
+    // Update today marker label for current language
+    todayStyle.textContent = `.gantt-today::before { content: '${t('todayMarker')}'; }`;
   }
 
-  // --- Tooltip ---
+  // ========== Tooltip ==========
   let tooltipEl = null;
 
   function showTooltip(e, task) {
@@ -232,11 +342,12 @@
     const startDate = formatShort(parseDate(task.start));
     const endDate = formatShort(parseDate(task.end));
     const days = daysBetween(parseDate(task.start), parseDate(task.end)) + 1;
+    const notes = tl(task, 'notes');
 
     tooltipEl.innerHTML = `
-      <div class="gantt-tooltip-title">${task.label}</div>
-      <div class="gantt-tooltip-dates">${startDate} → ${endDate} (${days} days)</div>
-      ${task.notes ? `<div class="gantt-tooltip-notes">${task.notes}</div>` : ''}
+      <div class="gantt-tooltip-title">${tl(task, 'label')}</div>
+      <div class="gantt-tooltip-dates">${startDate} → ${endDate} (${t('days', { n: days })})</div>
+      ${notes ? `<div class="gantt-tooltip-notes">${notes}</div>` : ''}
     `;
 
     tooltipEl.classList.add('visible');
@@ -252,22 +363,20 @@
   }
 
   document.addEventListener('mousemove', (e) => {
-    if (tooltipEl && tooltipEl.classList.contains('visible')) {
-      positionTooltip(e);
-    }
+    if (tooltipEl && tooltipEl.classList.contains('visible')) positionTooltip(e);
   });
 
   function hideTooltip() {
     if (tooltipEl) tooltipEl.classList.remove('visible');
   }
 
-  // --- Detail Panel ---
+  // ========== Detail Panel ==========
   const panelEl = document.getElementById('detailPanel');
   const contentEl = document.getElementById('detailContent');
   const closeBtn = document.getElementById('detailClose');
 
   function openDetail(taskId) {
-    const task = timeline.tasks.find(t => t.id === taskId);
+    const task = timeline.tasks.find(tk => tk.id === taskId);
     if (!task) return;
     activeTaskId = taskId;
 
@@ -275,20 +384,20 @@
     const startDate = formatDate(parseDate(task.start));
     const endDate = formatDate(parseDate(task.end));
     const days = daysBetween(parseDate(task.start), parseDate(task.end)) + 1;
+    const notes = tl(task, 'notes');
 
     contentEl.innerHTML = `
-      <div class="detail-task-name">${task.label}</div>
+      <div class="detail-task-name">${tl(task, 'label')}</div>
       <div class="detail-category" style="background:${cat ? cat.color + '20' : '#66666620'}; color:${cat ? cat.color : '#666'}">
         <span class="gantt-label-dot" style="background:${cat ? cat.color : '#666'}"></span>
-        ${cat ? cat.label : ''}
+        ${cat ? tl(cat, 'label') : ''}
       </div>
       <div class="detail-dates">${startDate} → ${endDate}</div>
-      <div class="detail-duration">${days} days</div>
-      ${task.critical ? '<div class="detail-critical-badge">⚠ Critical Path</div>' : ''}
-      ${task.notes ? `<div class="detail-notes">${task.notes}</div>` : ''}
+      <div class="detail-duration">${t('days', { n: days })}</div>
+      ${task.critical ? `<div class="detail-critical-badge">${t('criticalBadge')}</div>` : ''}
+      ${notes ? `<div class="detail-notes">${notes}</div>` : ''}
     `;
 
-    // Highlight row
     document.querySelectorAll('.gantt-label-row').forEach(r => r.classList.remove('active'));
     const labelRow = document.querySelector(`.gantt-label-row[data-id="${taskId}"]`);
     if (labelRow) labelRow.classList.add('active');
@@ -303,21 +412,18 @@
     document.querySelectorAll('.gantt-label-row').forEach(r => r.classList.remove('active'));
   });
 
-  // Close on Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && panelEl.classList.contains('open')) {
-      closeBtn.click();
-    }
+    if (e.key === 'Escape' && panelEl.classList.contains('open')) closeBtn.click();
   });
 
-  // --- Comments API ---
+  // ========== Comments API ==========
   const API_BASE = '/api/comments';
 
   async function fetchComments(taskId) {
     try {
       const url = taskId ? `${API_BASE}?taskId=${encodeURIComponent(taskId)}` : API_BASE;
       const res = await fetch(url);
-      if (!res.ok) throw new Error('Failed to load comments');
+      if (!res.ok) throw new Error('Failed');
       return await res.json();
     } catch (err) {
       console.warn('Comments fetch failed:', err);
@@ -340,7 +446,7 @@
 
   function renderComments(comments, listEl, showTaskRef) {
     if (!comments.length) {
-      listEl.innerHTML = '<div class="comments-empty">No comments yet.</div>';
+      listEl.innerHTML = `<div class="comments-empty">${t('noComments')}</div>`;
       return;
     }
     listEl.innerHTML = comments
@@ -352,14 +458,14 @@
             <span class="comment-time">${formatRelative(c.timestamp)}</span>
           </div>
           <div class="comment-body">${escapeHtml(c.text)}</div>
-          ${showTaskRef && c.taskId ? `<div class="comment-task-ref">Re: ${getTaskLabel(c.taskId)}</div>` : ''}
+          ${showTaskRef && c.taskId ? `<div class="comment-task-ref">${t('re')}${getTaskLabel(c.taskId)}</div>` : ''}
         </div>
       `).join('');
   }
 
   function getTaskLabel(taskId) {
-    const t = timeline.tasks.find(t => t.id === taskId);
-    return t ? t.label : taskId;
+    const tk = timeline.tasks.find(t => t.id === taskId);
+    return tk ? tl(tk, 'label') : taskId;
   }
 
   function escapeHtml(str) {
@@ -368,24 +474,21 @@
     return div.innerHTML;
   }
 
-  // Task-specific comments
   async function loadTaskComments(taskId) {
     const listEl = document.getElementById('commentsList');
-    listEl.innerHTML = '<div class="comments-empty">Loading...</div>';
+    listEl.innerHTML = `<div class="comments-empty">${t('loading')}</div>`;
     const comments = await fetchComments(taskId);
     renderComments(comments, listEl, false);
   }
 
-  // Global comments
   async function loadGlobalComments() {
     const listEl = document.getElementById('globalCommentsList');
-    listEl.innerHTML = '<div class="comments-empty">Loading...</div>';
+    listEl.innerHTML = `<div class="comments-empty">${t('loading')}</div>`;
     const comments = await fetchComments();
     renderComments(comments, listEl, true);
   }
 
-  // --- Comment Forms ---
-  // Task-specific form
+  // ========== Comment Forms ==========
   const taskForm = document.getElementById('commentForm');
   const taskNameInput = document.getElementById('commentName');
   const taskTextInput = document.getElementById('commentText');
@@ -399,12 +502,11 @@
     e.preventDefault();
     const btn = taskForm.querySelector('.comment-submit');
     btn.disabled = true;
-    btn.textContent = 'Posting...';
+    btn.textContent = t('posting');
     try {
       await postComment(taskNameInput.value.trim(), taskTextInput.value.trim(), activeTaskId);
       taskTextInput.value = '';
       taskCharCount.textContent = '0 / 500';
-      // Remember name
       localStorage.setItem('timeline-username', taskNameInput.value.trim());
       await loadTaskComments(activeTaskId);
       await loadGlobalComments();
@@ -412,11 +514,10 @@
       alert(err.message);
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Post Comment';
+      btn.textContent = t('postComment');
     }
   });
 
-  // Global form
   const globalForm = document.getElementById('globalCommentForm');
   const globalNameInput = document.getElementById('globalCommentName');
   const globalTextInput = document.getElementById('globalCommentText');
@@ -430,7 +531,7 @@
     e.preventDefault();
     const btn = globalForm.querySelector('.comment-submit');
     btn.disabled = true;
-    btn.textContent = 'Posting...';
+    btn.textContent = t('posting');
     try {
       await postComment(globalNameInput.value.trim(), globalTextInput.value.trim(), null);
       globalTextInput.value = '';
@@ -441,7 +542,7 @@
       alert(err.message);
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Post Comment';
+      btn.textContent = t('postComment');
     }
   });
 
@@ -452,7 +553,19 @@
     globalNameInput.value = savedName;
   }
 
-  // --- Init ---
+  // ========== Language Toggle ==========
+  const langToggle = document.getElementById('langToggle');
+  langToggle.addEventListener('click', () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem('timeline-lang', lang);
+    renderAll();
+  });
+
+  // ========== Today marker label via dynamic CSS ==========
+  const todayStyle = document.createElement('style');
+  document.head.appendChild(todayStyle);
+
+  // ========== Init ==========
   loadTimeline();
 
 })();

@@ -93,6 +93,30 @@ body {
   border-radius: 100px;
 }
 
+.lang-toggle {
+  font-family: var(--font);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.85rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.lang-toggle:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.lang-toggle .lang-active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 /* --- Legend --- */
 .legend-bar {
   background: var(--bg-alt);
@@ -379,6 +403,7 @@ body {
 }
 
 .gantt-today::before {
+  /* content set dynamically by JS for i18n */
   content: 'TODAY';
   position: absolute;
   top: -18px;

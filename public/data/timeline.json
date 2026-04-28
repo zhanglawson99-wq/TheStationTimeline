@@ -3,191 +3,229 @@
     "version": "v1",
     "updated": "2026-04-28",
     "project": "The Station Food Market",
+    "projectZh": "The Station Food Market",
     "target": "Open before end of August 2026",
+    "targetZh": "2026年8月底前开业",
     "dateRange": { "start": "2026-04-28", "end": "2026-08-31" }
   },
   "categories": [
-    { "id": "admin",      "label": "Administrative / Legal",      "color": "#3b82f6" },
-    { "id": "procurement", "label": "Procurement / Supply Chain", "color": "#10b981" },
-    { "id": "buildout",   "label": "Buildout / Construction",     "color": "#f97316" },
-    { "id": "compliance",  "label": "Compliance / Health Dept",   "color": "#ef4444" },
-    { "id": "operations",  "label": "Operations / Hiring",        "color": "#8b5cf6" },
-    { "id": "launch",     "label": "Launch",                      "color": "#f59e0b" }
+    { "id": "admin",       "label": "Administrative / Legal",     "labelZh": "行政 / 法务",     "color": "#3b82f6" },
+    { "id": "procurement", "label": "Procurement / Supply Chain",  "labelZh": "采购 / 供应链",   "color": "#10b981" },
+    { "id": "buildout",    "label": "Buildout / Construction",     "labelZh": "装修 / 施工",     "color": "#f97316" },
+    { "id": "compliance",  "label": "Compliance / Health Dept",    "labelZh": "合规 / 卫生部门", "color": "#ef4444" },
+    { "id": "operations",  "label": "Operations / Hiring",         "labelZh": "运营 / 招聘",     "color": "#8b5cf6" },
+    { "id": "launch",      "label": "Launch",                      "labelZh": "开业",            "color": "#f59e0b" }
   ],
   "tasks": [
     {
       "id": "company-reg",
       "label": "Company registration & bank account",
+      "labelZh": "公司注册及银行开户",
       "category": "admin",
       "start": "2026-04-28",
       "end": "2026-05-08",
       "critical": true,
-      "notes": "Must be done before permits, accounts, vendor orders, and billing can proceed."
+      "notes": "Must be done before permits, accounts, vendor orders, and billing can proceed.",
+      "notesZh": "必须在许可证、账户、供应商订单和账单处理之前完成。"
     },
     {
       "id": "prf-docs",
       "label": "PRF W-9 / COI / invoicing email",
+      "labelZh": "PRF W-9 / 保险证明 / 发票邮箱",
       "category": "admin",
       "start": "2026-04-28",
       "end": "2026-05-10",
       "critical": false,
-      "notes": "Send Purdue Research Foundation setup documents. Switch billing from personal to company card."
+      "notes": "Send Purdue Research Foundation setup documents. Switch billing from personal to company card.",
+      "notesZh": "向普渡研究基金会提交设置文件。将账单从个人卡切换到公司卡。"
     },
     {
       "id": "china-order",
       "label": "China furniture & materials order",
+      "labelZh": "国内家具及材料订购",
       "category": "procurement",
       "start": "2026-04-28",
       "end": "2026-05-10",
       "critical": true,
-      "notes": "Tables, chairs, benches, interior/renovation materials. Must order by ~May 10 for mid-July arrival via ocean freight (~45 days)."
+      "notes": "Tables, chairs, benches, interior/renovation materials. Must order by ~May 10 for mid-July arrival via ocean freight (~45 days).",
+      "notesZh": "桌椅、长凳、室内/装修材料。须在约5月10日前下单，海运约45天，预计7月中旬到达。"
     },
     {
       "id": "prf-plan",
       "label": "PRF equipment/renovation rectification plan",
+      "labelZh": "PRF 设备/装修整改方案",
       "category": "admin",
       "start": "2026-04-28",
       "end": "2026-05-15",
       "critical": false,
-      "notes": "Submit to PRF/landlord. Strategy: frame as functional upgrade (equipment relocation, paint/wallpaper, new furniture) to avoid building permit if scope supports it."
+      "notes": "Submit to PRF/landlord. Strategy: frame as functional upgrade (equipment relocation, paint/wallpaper, new furniture) to avoid building permit if scope supports it.",
+      "notesZh": "提交给PRF/房东。策略：以功能升级（设备重新布局、油漆/墙纸、新家具）方式呈现，如范围支持则避免建筑许可。"
     },
     {
       "id": "utilities",
       "label": "Water / electric / internet / gas accounts",
+      "labelZh": "水电网气账户开设",
       "category": "admin",
       "start": "2026-05-01",
       "end": "2026-05-15",
       "critical": false,
-      "notes": "Set up or transfer all utility and operating accounts. Must clear before NRA Show window (May 16-19)."
+      "notes": "Set up or transfer all utility and operating accounts. Must clear before NRA Show window (May 16-19).",
+      "notesZh": "设置或转移所有公用事业和运营账户。必须在NRA展会窗口（5月16-19日）前完成。"
     },
     {
       "id": "nra-show",
       "label": "NRA Show (low-output window)",
+      "labelZh": "NRA 展会（低产出窗口）",
       "category": "operations",
       "start": "2026-05-16",
       "end": "2026-05-19",
       "critical": false,
-      "notes": "Team attending NRA Show — treat as mostly unavailable for substantial project execution. Pull forward or push back any deadlines landing here."
+      "notes": "Team attending NRA Show — treat as mostly unavailable for substantial project execution. Pull forward or push back any deadlines landing here.",
+      "notesZh": "团队参加NRA展会——基本不可用于重大项目执行。将此窗口内的截止日期提前或推后。"
     },
     {
       "id": "interior-finish",
       "label": "Interior paint / wallpaper / wall finish",
+      "labelZh": "内部油漆 / 墙纸 / 墙面装饰",
       "category": "buildout",
       "start": "2026-05-20",
       "end": "2026-06-10",
       "critical": false,
-      "notes": "Starts after NRA Show if site readiness allows. Separate from health department package unless it affects construction."
+      "notes": "Starts after NRA Show if site readiness allows. Separate from health department package unless it affects construction.",
+      "notesZh": "如现场准备就绪，NRA展会后开始。除非影响施工，否则与卫生部门资料包分开处理。"
     },
     {
       "id": "equipment-order",
       "label": "Equipment selection & ordering",
+      "labelZh": "设备选型及订购",
       "category": "procurement",
       "start": "2026-04-28",
       "end": "2026-05-31",
       "critical": true,
-      "notes": "Finalize all major equipment selections. Confirm specs, model numbers, lead times. All equipment must be ordered by May 31. Includes dishwasher decision."
+      "notes": "Finalize all major equipment selections. Confirm specs, model numbers, lead times. All equipment must be ordered by May 31. Includes dishwasher decision.",
+      "notesZh": "确定所有主要设备选型。确认规格、型号、交期。所有设备须在5月31日前订购。含洗碗机决定。"
     },
     {
       "id": "china-freight",
       "label": "China freight / ocean shipping",
+      "labelZh": "国内海运发货",
       "category": "procurement",
       "start": "2026-05-31",
       "end": "2026-07-15",
       "critical": true,
-      "notes": "~45 days ocean freight. Ship by end of May to arrive mid-July. Includes customs and final delivery."
+      "notes": "~45 days ocean freight. Ship by end of May to arrive mid-July. Includes customs and final delivery.",
+      "notesZh": "约45天海运。5月底发货，7月中旬到达。含清关和最终配送。"
     },
     {
       "id": "menu-draft",
       "label": "Menu plan-review version",
+      "labelZh": "菜单（计划审查版本）",
       "category": "compliance",
       "start": "2026-04-28",
       "end": "2026-06-10",
       "critical": true,
-      "notes": "Convert broad menu ideas into launch-menu draft for health department plan review. Separate Asian, Mexican, American, Drinks, Mini-market. Internal deadline June 10."
+      "notes": "Convert broad menu ideas into launch-menu draft for health department plan review. Separate Asian, Mexican, American, Drinks, Mini-market. Internal deadline June 10.",
+      "notesZh": "将菜单创意转化为卫生部门计划审查可用的开业菜单初稿。分为亚洲、墨西哥、美式、饮品、便利店。内部截止日期6月10日。"
     },
     {
       "id": "equipment-layout",
       "label": "Equipment list / layout / warewashing / refrigeration",
+      "labelZh": "设备清单 / 布局 / 洗碗 / 冷藏",
       "category": "compliance",
       "start": "2026-04-28",
       "end": "2026-06-10",
       "critical": true,
-      "notes": "Equipment list, kitchen/prep/storage/cooler layout, dishwasher/warewashing details, refrigeration/food-storage info. All needed for plan-review package. Internal deadline June 10."
+      "notes": "Equipment list, kitchen/prep/storage/cooler layout, dishwasher/warewashing details, refrigeration/food-storage info. All needed for plan-review package. Internal deadline June 10.",
+      "notesZh": "设备清单、厨房/备餐/储藏/冷柜布局、洗碗/洗涤详情、冷藏/食品储存信息。均为计划审查资料包所需。内部截止日期6月10日。"
     },
     {
       "id": "plan-review-submit",
       "label": "Health dept plan-review submission",
+      "labelZh": "卫生部门计划审查提交",
       "category": "compliance",
       "start": "2026-06-15",
       "end": "2026-06-20",
       "critical": true,
-      "notes": "Submit menu, equipment list, layout/flow, warewashing/refrigeration docs, required forms and fees. If this slips past late June, early-August inspection becomes unrealistic."
+      "notes": "Submit menu, equipment list, layout/flow, warewashing/refrigeration docs, required forms and fees. If this slips past late June, early-August inspection becomes unrealistic.",
+      "notesZh": "提交菜单、设备清单、布局/流程、洗涤/冷藏文件、所需表格和费用。如延迟到6月底之后，8月初检查将不现实。"
     },
     {
       "id": "plan-review-wait",
       "label": "Health dept review waiting period (~45 days)",
+      "labelZh": "卫生部门审查等待期（约45天）",
       "category": "compliance",
       "start": "2026-06-20",
       "end": "2026-08-03",
       "critical": true,
-      "notes": "~45 day review period. Track any questions or revision requests quickly. Keep a response owner assigned."
+      "notes": "~45 day review period. Track any questions or revision requests quickly. Keep a response owner assigned.",
+      "notesZh": "约45天审查期。快速跟踪任何问题或修改要求。保持指定响应负责人。"
     },
     {
       "id": "buildout-install",
       "label": "Buildout / equipment install / cleaning / testing",
+      "labelZh": "装修 / 设备安装 / 清洁 / 测试",
       "category": "buildout",
       "start": "2026-06-20",
       "end": "2026-07-31",
       "critical": false,
-      "notes": "Continue in parallel with plan review. Includes cooler floor work, dishwasher install, cleaning, internet/camera/phone setup."
+      "notes": "Continue in parallel with plan review. Includes cooler floor work, dishwasher install, cleaning, internet/camera/phone setup.",
+      "notesZh": "与计划审查并行进行。包括冷柜地面施工、洗碗机安装、清洁、网络/摄像头/电话设置。"
     },
     {
       "id": "hiring-training",
       "label": "Hiring / ServSafe / training / POS",
+      "labelZh": "招聘 / ServSafe / 培训 / POS",
       "category": "operations",
       "start": "2026-06-20",
       "end": "2026-08-15",
       "critical": false,
-      "notes": "Hire staff, complete ServSafe certification, train team, set up POS system."
+      "notes": "Hire staff, complete ServSafe certification, train team, set up POS system.",
+      "notesZh": "招聘员工，完成ServSafe认证，培训团队，设置POS系统。"
     },
     {
       "id": "health-inspection",
       "label": "Health department inspection",
+      "labelZh": "卫生部门现场检查",
       "category": "compliance",
       "start": "2026-08-03",
       "end": "2026-08-07",
       "critical": true,
-      "notes": "Target inspection window. Equipment must be installed and working. If fixes needed, address immediately and request re-check ASAP."
+      "notes": "Target inspection window. Equipment must be installed and working. If fixes needed, address immediately and request re-check ASAP.",
+      "notesZh": "目标检查窗口。设备必须安装并正常运行。如需整改，立即处理并尽快申请复检。"
     },
     {
       "id": "soft-opening",
       "label": "Soft opening preparation",
+      "labelZh": "试营业准备",
       "category": "launch",
       "start": "2026-08-10",
       "end": "2026-08-21",
       "critical": false,
-      "notes": "Limited hours, controlled menu, invite/team/friends test. Run kitchen test, ordering/payment test, seating/queue/trash flow test."
+      "notes": "Limited hours, controlled menu, invite/team/friends test. Run kitchen test, ordering/payment test, seating/queue/trash flow test.",
+      "notesZh": "限时营业、限定菜单、邀请/团队/朋友测试。进行厨房测试、点餐/支付测试、座位/排队/垃圾处理流程测试。"
     },
     {
       "id": "public-opening",
       "label": "Public opening",
+      "labelZh": "正式开业",
       "category": "launch",
       "start": "2026-08-24",
       "end": "2026-08-31",
       "critical": true,
-      "notes": "Target: open before end of August 2026. Health clearance achieved, staff ready, operations stable, website/social updated."
+      "notes": "Target: open before end of August 2026. Health clearance achieved, staff ready, operations stable, website/social updated.",
+      "notesZh": "目标：2026年8月底前开业。卫生许可已获得，员工就位，运营稳定，网站/社交媒体已更新。"
     }
   ],
   "milestones": [
-    { "id": "ms-bank",       "date": "2026-05-08", "label": "Company bank account open",          "critical": true  },
-    { "id": "ms-china-order","date": "2026-05-10", "label": "China furniture/materials ordered",   "critical": true  },
-    { "id": "ms-prf-utils",  "date": "2026-05-15", "label": "PRF plan submitted + utilities done", "critical": false },
-    { "id": "ms-nra",        "date": "2026-05-16", "label": "NRA Show begins",                    "critical": false },
-    { "id": "ms-equip-done", "date": "2026-05-31", "label": "All equipment ordered / China shipped","critical": true  },
-    { "id": "ms-pkg-ready",  "date": "2026-06-10", "label": "Health dept package internally ready","critical": true  },
-    { "id": "ms-submitted",  "date": "2026-06-20", "label": "Plan review submitted",              "critical": true  },
-    { "id": "ms-china-arrive","date": "2026-07-15","label": "China-sourced goods arrive",         "critical": true  },
-    { "id": "ms-inspection", "date": "2026-08-03", "label": "Health inspection window opens",     "critical": true  },
-    { "id": "ms-opening",    "date": "2026-08-31", "label": "Latest target: public opening",      "critical": true  }
+    { "id": "ms-bank",        "date": "2026-05-08", "label": "Company bank account open",           "labelZh": "公司银行账户开通",                "critical": true  },
+    { "id": "ms-china-order", "date": "2026-05-10", "label": "China furniture/materials ordered",    "labelZh": "国内家具/材料已下单",              "critical": true  },
+    { "id": "ms-prf-utils",   "date": "2026-05-15", "label": "PRF plan submitted + utilities done",  "labelZh": "PRF方案已提交 + 公用事业已完成",   "critical": false },
+    { "id": "ms-nra",         "date": "2026-05-16", "label": "NRA Show begins",                     "labelZh": "NRA展会开始",                     "critical": false },
+    { "id": "ms-equip-done",  "date": "2026-05-31", "label": "All equipment ordered / China shipped","labelZh": "全部设备已订购 / 国内已发货",      "critical": true  },
+    { "id": "ms-pkg-ready",   "date": "2026-06-10", "label": "Health dept package internally ready", "labelZh": "卫生部门资料包内部完成",           "critical": true  },
+    { "id": "ms-submitted",   "date": "2026-06-20", "label": "Plan review submitted",               "labelZh": "计划审查已提交",                   "critical": true  },
+    { "id": "ms-china-arrive","date": "2026-07-15", "label": "China-sourced goods arrive",           "labelZh": "国内采购货物到达",                 "critical": true  },
+    { "id": "ms-inspection",  "date": "2026-08-03", "label": "Health inspection window opens",       "labelZh": "卫生检查窗口开始",                 "critical": true  },
+    { "id": "ms-opening",     "date": "2026-08-31", "label": "Latest target: public opening",        "labelZh": "最晚目标：正式开业",               "critical": true  }
   ]
 }

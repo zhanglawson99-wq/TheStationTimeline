@@ -24,6 +24,7 @@
         <span class="header-subtitle">Project Timeline</span>
       </div>
       <div class="header-meta">
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文 / EN</button>
         <span class="version-badge" id="versionBadge"></span>
         <span class="today-badge" id="todayBadge"></span>
       </div>
@@ -61,17 +62,17 @@
 
       <!-- Comments Section -->
       <div class="comments-section">
-        <h3 class="comments-title">Notes & Comments</h3>
-        <p class="comments-notice">Comments are visible to the project team. Please use your real name.</p>
+        <h3 class="comments-title" data-i18n="commentsTitle">备注与评论</h3>
+        <p class="comments-notice" data-i18n="commentsNotice">评论对项目团队可见，请使用真实姓名。</p>
 
         <div class="comments-list" id="commentsList"></div>
 
         <form class="comment-form" id="commentForm">
-          <input type="text" id="commentName" placeholder="Your name" maxlength="50" required>
-          <textarea id="commentText" placeholder="Add a note or comment..." maxlength="500" rows="3" required></textarea>
+          <input type="text" id="commentName" placeholder="你的名字" maxlength="50" required data-i18n-placeholder="namePlaceholder">
+          <textarea id="commentText" placeholder="添加备注或评论..." maxlength="500" rows="3" required data-i18n-placeholder="commentPlaceholder"></textarea>
           <div class="comment-form-footer">
             <span class="comment-char-count" id="charCount">0 / 500</span>
-            <button type="submit" class="comment-submit">Post Comment</button>
+            <button type="submit" class="comment-submit" data-i18n="postComment">发表评论</button>
           </div>
         </form>
       </div>
@@ -81,15 +82,15 @@
   <!-- ========== Global Comments ========== -->
   <section class="global-comments" id="globalComments">
     <div class="global-comments-inner">
-      <h2>All Project Comments</h2>
-      <p class="comments-notice">Comments are visible to the project team. Please use your real name.</p>
+      <h2 data-i18n="allComments">所有项目评论</h2>
+      <p class="comments-notice" data-i18n="commentsNotice">评论对项目团队可见，请使用真实姓名。</p>
       <div class="comments-list" id="globalCommentsList"></div>
       <form class="comment-form" id="globalCommentForm">
-        <input type="text" id="globalCommentName" placeholder="Your name" maxlength="50" required>
-        <textarea id="globalCommentText" placeholder="General project comment..." maxlength="500" rows="3" required></textarea>
+        <input type="text" id="globalCommentName" placeholder="你的名字" maxlength="50" required data-i18n-placeholder="namePlaceholder">
+        <textarea id="globalCommentText" placeholder="项目总体评论..." maxlength="500" rows="3" required data-i18n-placeholder="globalCommentPlaceholder"></textarea>
         <div class="comment-form-footer">
           <span class="comment-char-count" id="globalCharCount">0 / 500</span>
-          <button type="submit" class="comment-submit">Post Comment</button>
+          <button type="submit" class="comment-submit" data-i18n="postComment">发表评论</button>
         </div>
       </form>
     </div>
@@ -97,7 +98,7 @@
 
   <!-- ========== Footer ========== -->
   <footer class="footer">
-    <p>The Station Food Market · Project Timeline · Internal Use</p>
+    <p data-i18n="footer">The Station Food Market · 项目时间线 · 内部使用</p>
   </footer>
 
   <script src="/js/app.js"></script>
