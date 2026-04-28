@@ -11,7 +11,7 @@
     zh: {
       projectTimeline: '项目时间线',
       timelineVersion: '时间线 {version} — 更新于 {date}',
-      today: '今天：{date}',
+      today: '当前：{date}',
       taskHeader: '任务',
       criticalPath: '关键路径',
       milestone: '里程碑',
@@ -39,7 +39,7 @@
     en: {
       projectTimeline: 'Project Timeline',
       timelineVersion: 'Timeline {version} — updated {date}',
-      today: 'Today: {date}',
+      today: 'Now: {date}',
       taskHeader: 'Task',
       criticalPath: 'Critical Path',
       milestone: 'Milestone',
@@ -100,6 +100,7 @@
   // ========== State ==========
   let timeline = null;
   let activeTaskId = null;
+  let didInitialTimeScroll = false;
   let commentCounts = {};
   let allCommentsCache = [];
 
@@ -121,6 +122,10 @@
   function formatMonthYear(d) {
     const locale = lang === 'zh' ? 'zh-CN' : 'en-US';
     return d.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
+  }
+  function formatDateTime(d) {
+    const locale = lang === 'zh' ? 'zh-CN' : 'en-US';
+    return d.toLocaleString(locale, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
   }
 
   function formatRelative(ts) {
@@ -159,12 +164,13 @@
     const rangeStart = parseDate(meta.dateRange.start);
     const rangeEnd = parseDate(meta.dateRange.end);
     const totalDays = daysBetween(rangeStart, rangeEnd) + 1;
-    const today = new Date();
+    const now = new Date();
+    const today = new Date(now);
     today.setHours(0, 0, 0, 0);
 
     // Header
     document.getElementById('versionBadge').textContent = t('timelineVersion', { version: meta.version, date: meta.updated });
-    document.getElementById('todayBadge').textContent = t('today', { date: formatDate(today) });
+    document.getElementById('todayBadge').textContent = t('today', { date: formatDateTime(now) });
 
     // Legend categories
     const legendEl = document.getElementById('legendCategories');
@@ -309,20 +315,12 @@
       bodyEl.appendChild(rowEl);
     });
 
-    // Today line
-    const todayOffset = daysBetween(rangeStart, today);
-    if (todayOffset >= 0 && todayOffset <= totalDays) {
-      const todayLine = document.createElement('div');
-      todayLine.className = 'gantt-today';
-      todayLine.style.left = (todayOffset * DAY_W + DAY_W / 2) + 'px';
-      todayLine.dataset.label = t('todayMarker');
-      bodyEl.appendChild(todayLine);
-    }
-
-    // Scroll to today
-    const scrollEl = document.getElementById('ganttScroll');
-    const targetScroll = Math.max(0, todayOffset * DAY_W - scrollEl.clientWidth / 3);
-    scrollEl.scrollLeft = targetScroll;
+    // Current-time line. Position is updated by updateCurrentTimeMarker(),
+    // so the marker moves during the day without reloading the page.
+    const todayLine = document.createElement('div');
+    todayLine.className = 'gantt-today';
+    todayLine.dataset.label = t('todayMarker');
+    bodyEl.appendChild(todayLine);
 
     // If detail panel is open, re-render it
     if (activeTaskId && panelEl.classList.contains('open')) {
@@ -331,12 +329,55 @@
 
     loadGlobalComments();
 
-    // Update today marker label for current language
+    // Update current-time marker label/position for current language.
     todayStyle.textContent = `.gantt-today::before { content: '${t('todayMarker')}'; }`;
+    updateCurrentTimeMarker({ scrollIntoView: !didInitialTimeScroll });
+    didInitialTimeScroll = true;
 
     // Apply cached comment badges then refresh from API
     applyCommentBadges();
     refreshCommentCounts();
+  }
+
+  // ========== Current-time marker ==========
+  function getCurrentTimeOffset(rangeStart, totalDays) {
+    const now = new Date();
+    return {
+      now,
+      offsetDays: (now.getTime() - rangeStart.getTime()) / DAY_MS,
+      inRange: now >= rangeStart && (now.getTime() - rangeStart.getTime()) / DAY_MS <= totalDays
+    };
+  }
+
+  function updateCurrentTimeMarker(options = {}) {
+    if (!timeline) return;
+    const { meta } = timeline;
+    const rangeStart = parseDate(meta.dateRange.start);
+    const rangeEnd = parseDate(meta.dateRange.end);
+    const totalDays = daysBetween(rangeStart, rangeEnd) + 1;
+    const { now, offsetDays, inRange } = getCurrentTimeOffset(rangeStart, totalDays);
+
+    const badge = document.getElementById('todayBadge');
+    if (badge) badge.textContent = t('today', { date: formatDateTime(now) });
+
+    const line = document.querySelector('.gantt-today');
+    if (!line) return;
+    if (!inRange) {
+      line.style.display = 'none';
+      return;
+    }
+
+    line.style.display = '';
+    line.style.left = (offsetDays * DAY_W) + 'px';
+    line.dataset.label = t('todayMarker');
+
+    if (options.scrollIntoView) {
+      const scrollEl = document.getElementById('ganttScroll');
+      if (scrollEl) {
+        const targetScroll = Math.max(0, offsetDays * DAY_W - scrollEl.clientWidth / 3);
+        scrollEl.scrollLeft = targetScroll;
+      }
+    }
   }
 
   // ========== Tooltip ==========
@@ -644,5 +685,6 @@
 
   // ========== Init ==========
   loadTimeline();
+  setInterval(() => updateCurrentTimeMarker(), 60000);
 
 })();
