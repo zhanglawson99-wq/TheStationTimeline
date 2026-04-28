@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v1",
+    "version": "v1.1",
     "updated": "2026-04-28",
     "project": "The Station Food Market",
     "projectZh": "The Station Food Market",
@@ -117,15 +117,26 @@
       "notesZh": "约45天海运。5月底发货，7月中旬到达。含清关和最终配送。"
     },
     {
-      "id": "menu-draft",
-      "label": "Menu plan-review version",
-      "labelZh": "菜单（计划审查版本）",
+      "id": "menu-system-draft",
+      "label": "Full menu system draft",
+      "labelZh": "完整菜单体系初稿",
       "category": "compliance",
       "start": "2026-04-28",
+      "end": "2026-05-31",
+      "critical": true,
+      "notes": "Draft the complete menu system by May 31: drinks menu, dessert menu, ice/shaved-ice/frozen items menu, front-kitchen menu, back-kitchen menu, and mini-market product list. This is an upstream dependency for the June 10 health-department package readiness gate.",
+      "notesZh": "5月31日前完成完整菜单体系初稿：饮品菜单、甜品菜单、冰品/刨冰/冷冻品菜单、前厨菜单、后厨菜单、便利店商品清单。这是6月10日卫生部门资料包就绪门槛的上游依赖。"
+    },
+    {
+      "id": "menu-finalize",
+      "label": "Menu → health dept package finalization",
+      "labelZh": "菜单→卫生部门资料包定稿",
+      "category": "compliance",
+      "start": "2026-06-01",
       "end": "2026-06-10",
       "critical": true,
-      "notes": "Convert broad menu ideas into launch-menu draft for health department plan review. Separate Asian, Mexican, American, Drinks, Mini-market. Internal deadline June 10.",
-      "notesZh": "将菜单创意转化为卫生部门计划审查可用的开业菜单初稿。分为亚洲、墨西哥、美式、饮品、便利店。内部截止日期6月10日。"
+      "notes": "Convert the full menu system draft into health-department submission-ready format. Finalize item lists, prep methods, and equipment dependencies. Internal deadline June 10.",
+      "notesZh": "将完整菜单体系初稿转化为卫生部门提交格式。定稿菜品清单、制备方法和设备依赖。内部截止日期6月10日。"
     },
     {
       "id": "equipment-layout",
@@ -221,7 +232,7 @@
     { "id": "ms-china-order", "date": "2026-05-10", "label": "China furniture/materials ordered",    "labelZh": "国内家具/材料已下单",              "critical": true  },
     { "id": "ms-prf-utils",   "date": "2026-05-15", "label": "PRF plan submitted + utilities done",  "labelZh": "PRF方案已提交 + 公用事业已完成",   "critical": false },
     { "id": "ms-nra",         "date": "2026-05-16", "label": "NRA Show begins",                     "labelZh": "NRA展会开始",                     "critical": false },
-    { "id": "ms-equip-done",  "date": "2026-05-31", "label": "All equipment ordered / China shipped","labelZh": "全部设备已订购 / 国内已发货",      "critical": true  },
+    { "id": "ms-equip-menu",  "date": "2026-05-31", "label": "All equipment ordered + full menu draft done","labelZh": "全部设备已订购 + 完整菜单初稿完成",  "critical": true  },
     { "id": "ms-pkg-ready",   "date": "2026-06-10", "label": "Health dept package internally ready", "labelZh": "卫生部门资料包内部完成",           "critical": true  },
     { "id": "ms-submitted",   "date": "2026-06-20", "label": "Plan review submitted",               "labelZh": "计划审查已提交",                   "critical": true  },
     { "id": "ms-china-arrive","date": "2026-07-15", "label": "China-sourced goods arrive",           "labelZh": "国内采购货物到达",                 "critical": true  },
