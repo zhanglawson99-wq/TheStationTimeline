@@ -32,6 +32,8 @@
       re: '关于：',
       criticalBadge: '⚠ 关键路径',
       todayMarker: '今天',
+      commentCountLabel: '{n} 条评论',
+      commentCountZero: '暂无评论',
       langToggle: '<span class="lang-active">中文</span> / EN'
     },
     en: {
@@ -58,6 +60,8 @@
       re: 'Re: ',
       criticalBadge: '⚠ Critical Path',
       todayMarker: 'TODAY',
+      commentCountLabel: '{n} comments',
+      commentCountZero: 'No comments',
       langToggle: '中文 / <span class="lang-active">EN</span>'
     }
   };
@@ -96,6 +100,8 @@
   // ========== State ==========
   let timeline = null;
   let activeTaskId = null;
+  let commentCounts = {};
+  let allCommentsCache = [];
 
   // ========== Constants ==========
   const DAY_MS = 86400000;
@@ -327,6 +333,10 @@
 
     // Update today marker label for current language
     todayStyle.textContent = `.gantt-today::before { content: '${t('todayMarker')}'; }`;
+
+    // Apply cached comment badges then refresh from API
+    applyCommentBadges();
+    refreshCommentCounts();
   }
 
   // ========== Tooltip ==========
@@ -404,6 +414,7 @@
 
     panelEl.classList.add('open');
     loadTaskComments(taskId);
+    updateDetailCommentCount();
   }
 
   closeBtn.addEventListener('click', () => {
@@ -468,6 +479,84 @@
     return tk ? tl(tk, 'label') : taskId;
   }
 
+  // ========== Comment Count Badges ==========
+  async function refreshCommentCounts() {
+    try {
+      allCommentsCache = await fetchComments();
+      commentCounts = {};
+      allCommentsCache.forEach(c => {
+        if (c.taskId) commentCounts[c.taskId] = (commentCounts[c.taskId] || 0) + 1;
+      });
+      applyCommentBadges();
+    } catch (_) { /* silent */ }
+  }
+
+  function applyCommentBadges() {
+    // Label rows
+    document.querySelectorAll('.gantt-label-row[data-id]').forEach(row => {
+      const id = row.dataset.id;
+      const count = commentCounts[id] || 0;
+      let badge = row.querySelector('.comment-badge');
+      if (count > 0) {
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'comment-badge';
+          row.appendChild(badge);
+        }
+        badge.textContent = '\uD83D\uDCAC' + count;
+        badge.title = t('commentCountLabel', { n: count });
+      } else if (badge) {
+        badge.remove();
+      }
+    });
+
+    // Gantt bars
+    document.querySelectorAll('.gantt-bar[data-id]').forEach(bar => {
+      const id = bar.dataset.id;
+      const count = commentCounts[id] || 0;
+      let badge = bar.querySelector('.bar-comment-badge');
+      if (count > 0) {
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'bar-comment-badge';
+          bar.appendChild(badge);
+        }
+        badge.textContent = '\uD83D\uDCAC' + count;
+      } else if (badge) {
+        badge.remove();
+      }
+    });
+
+    // Global comments header count
+    const globalHeader = document.querySelector('[data-i18n="allComments"]');
+    if (globalHeader) {
+      const total = allCommentsCache.length;
+      let badge = globalHeader.querySelector('.global-comment-count');
+      if (total > 0) {
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'global-comment-count';
+          globalHeader.appendChild(badge);
+        }
+        badge.textContent = total;
+      } else if (badge) {
+        badge.remove();
+      }
+    }
+
+    // Detail panel
+    updateDetailCommentCount();
+  }
+
+  function updateDetailCommentCount() {
+    const countEl = document.getElementById('detailCommentCount');
+    if (!countEl || !activeTaskId) return;
+    const count = commentCounts[activeTaskId] || 0;
+    countEl.textContent = count > 0
+      ? t('commentCountLabel', { n: count })
+      : t('commentCountZero');
+  }
+
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
@@ -510,6 +599,7 @@
       localStorage.setItem('timeline-username', taskNameInput.value.trim());
       await loadTaskComments(activeTaskId);
       await loadGlobalComments();
+      await refreshCommentCounts();
     } catch (err) {
       alert(err.message);
     } finally {
@@ -538,6 +628,7 @@
       globalCharCount.textContent = '0 / 500';
       localStorage.setItem('timeline-username', globalNameInput.value.trim());
       await loadGlobalComments();
+      await refreshCommentCounts();
     } catch (err) {
       alert(err.message);
     } finally {
