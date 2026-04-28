@@ -510,22 +510,8 @@
       }
     });
 
-    // Gantt bars
-    document.querySelectorAll('.gantt-bar[data-id]').forEach(bar => {
-      const id = bar.dataset.id;
-      const count = commentCounts[id] || 0;
-      let badge = bar.querySelector('.bar-comment-badge');
-      if (count > 0) {
-        if (!badge) {
-          badge = document.createElement('span');
-          badge.className = 'bar-comment-badge';
-          bar.appendChild(badge);
-        }
-        badge.textContent = '\uD83D\uDCAC' + count;
-      } else if (badge) {
-        badge.remove();
-      }
-    });
+    // Gantt bars intentionally keep no inline comment badge to avoid visual clutter.
+    document.querySelectorAll('.gantt-bar .bar-comment-badge').forEach(badge => badge.remove());
 
     // Global comments header count
     const globalHeader = document.querySelector('[data-i18n="allComments"]');

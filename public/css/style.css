@@ -715,20 +715,6 @@ body {
   padding-left: 0.35rem;
 }
 
-.bar-comment-badge {
-  position: absolute;
-  right: 4px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.6rem;
-  background: rgba(0,0,0,0.45);
-  color: var(--accent);
-  padding: 1px 5px;
-  border-radius: 100px;
-  white-space: nowrap;
-  pointer-events: none;
-}
-
 .global-comment-count {
   display: inline-flex;
   align-items: center;
