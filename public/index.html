@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Station Food Market — Project Timeline</title>
+  <meta name="description" content="Interactive project timeline for The Station Food Market at Purdue University.">
+  <meta name="theme-color" content="#0f1117">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <h1>The Station Food Market</h1>
+        <span class="header-subtitle">Project Timeline</span>
+      </div>
+      <div class="header-meta">
+        <span class="version-badge" id="versionBadge"></span>
+        <span class="today-badge" id="todayBadge"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== Legend ========== -->
+  <div class="legend-bar">
+    <div class="legend-inner">
+      <div class="legend-categories" id="legendCategories"></div>
+      <div class="legend-extras">
+        <span class="legend-item"><span class="legend-icon legend-icon--critical"></span> Critical Path</span>
+        <span class="legend-item"><span class="legend-icon legend-icon--milestone"></span> Milestone</span>
+        <span class="legend-item"><span class="legend-icon legend-icon--today"></span> Today</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Gantt Chart ========== -->
+  <div class="gantt-wrapper">
+    <div class="gantt-labels" id="ganttLabels"></div>
+    <div class="gantt-scroll" id="ganttScroll">
+      <div class="gantt-chart" id="ganttChart">
+        <div class="gantt-header" id="ganttHeader"></div>
+        <div class="gantt-body" id="ganttBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Task Detail Panel ========== -->
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-panel-inner">
+      <button class="detail-close" id="detailClose" aria-label="Close">✕</button>
+      <div class="detail-content" id="detailContent"></div>
+
+      <!-- Comments Section -->
+      <div class="comments-section">
+        <h3 class="comments-title">Notes & Comments</h3>
+        <p class="comments-notice">Comments are visible to the project team. Please use your real name.</p>
+
+        <div class="comments-list" id="commentsList"></div>
+
+        <form class="comment-form" id="commentForm">
+          <input type="text" id="commentName" placeholder="Your name" maxlength="50" required>
+          <textarea id="commentText" placeholder="Add a note or comment..." maxlength="500" rows="3" required></textarea>
+          <div class="comment-form-footer">
+            <span class="comment-char-count" id="charCount">0 / 500</span>
+            <button type="submit" class="comment-submit">Post Comment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Global Comments ========== -->
+  <section class="global-comments" id="globalComments">
+    <div class="global-comments-inner">
+      <h2>All Project Comments</h2>
+      <p class="comments-notice">Comments are visible to the project team. Please use your real name.</p>
+      <div class="comments-list" id="globalCommentsList"></div>
+      <form class="comment-form" id="globalCommentForm">
+        <input type="text" id="globalCommentName" placeholder="Your name" maxlength="50" required>
+        <textarea id="globalCommentText" placeholder="General project comment..." maxlength="500" rows="3" required></textarea>
+        <div class="comment-form-footer">
+          <span class="comment-char-count" id="globalCharCount">0 / 500</span>
+          <button type="submit" class="comment-submit">Post Comment</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <p>The Station Food Market · Project Timeline · Internal Use</p>
+  </footer>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

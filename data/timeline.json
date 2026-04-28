@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "version": "v1",
+    "updated": "2026-04-28",
+    "project": "The Station Food Market",
+    "target": "Open before end of August 2026",
+    "dateRange": { "start": "2026-04-28", "end": "2026-08-31" }
+  },
+  "categories": [
+    { "id": "admin",      "label": "Administrative / Legal",      "color": "#3b82f6" },
+    { "id": "procurement", "label": "Procurement / Supply Chain", "color": "#10b981" },
+    { "id": "buildout",   "label": "Buildout / Construction",     "color": "#f97316" },
+    { "id": "compliance",  "label": "Compliance / Health Dept",   "color": "#ef4444" },
+    { "id": "operations",  "label": "Operations / Hiring",        "color": "#8b5cf6" },
+    { "id": "launch",     "label": "Launch",                      "color": "#f59e0b" }
+  ],
+  "tasks": [
+    {
+      "id": "company-reg",
+      "label": "Company registration & bank account",
+      "category": "admin",
+      "start": "2026-04-28",
+      "end": "2026-05-08",
+      "critical": true,
+      "notes": "Must be done before permits, accounts, vendor orders, and billing can proceed."
+    },
+    {
+      "id": "prf-docs",
+      "label": "PRF W-9 / COI / invoicing email",
+      "category": "admin",
+      "start": "2026-04-28",
+      "end": "2026-05-10",
+      "critical": false,
+      "notes": "Send Purdue Research Foundation setup documents. Switch billing from personal to company card."
+    },
+    {
+      "id": "china-order",
+      "label": "China furniture & materials order",
+      "category": "procurement",
+      "start": "2026-04-28",
+      "end": "2026-05-10",
+      "critical": true,
+      "notes": "Tables, chairs, benches, interior/renovation materials. Must order by ~May 10 for mid-July arrival via ocean freight (~45 days)."
+    },
+    {
+      "id": "prf-plan",
+      "label": "PRF equipment/renovation rectification plan",
+      "category": "admin",
+      "start": "2026-04-28",
+      "end": "2026-05-15",
+      "critical": false,
+      "notes": "Submit to PRF/landlord. Strategy: frame as functional upgrade (equipment relocation, paint/wallpaper, new furniture) to avoid building permit if scope supports it."
+    },
+    {
+      "id": "utilities",
+      "label": "Water / electric / internet / gas accounts",
+      "category": "admin",
+      "start": "2026-05-01",
+      "end": "2026-05-15",
+      "critical": false,
+      "notes": "Set up or transfer all utility and operating accounts. Must clear before NRA Show window (May 16-19)."
+    },
+    {
+      "id": "nra-show",
+      "label": "NRA Show (low-output window)",
+      "category": "operations",
+      "start": "2026-05-16",
+      "end": "2026-05-19",
+      "critical": false,
+      "notes": "Team attending NRA Show — treat as mostly unavailable for substantial project execution. Pull forward or push back any deadlines landing here."
+    },
+    {
+      "id": "interior-finish",
+      "label": "Interior paint / wallpaper / wall finish",
+      "category": "buildout",
+      "start": "2026-05-20",
+      "end": "2026-06-10",
+      "critical": false,
+      "notes": "Starts after NRA Show if site readiness allows. Separate from health department package unless it affects construction."
+    },
+    {
+      "id": "equipment-order",
+      "label": "Equipment selection & ordering",
+      "category": "procurement",
+      "start": "2026-04-28",
+      "end": "2026-05-31",
+      "critical": true,
+      "notes": "Finalize all major equipment selections. Confirm specs, model numbers, lead times. All equipment must be ordered by May 31. Includes dishwasher decision."
+    },
+    {
+      "id": "china-freight",
+      "label": "China freight / ocean shipping",
+      "category": "procurement",
+      "start": "2026-05-31",
+      "end": "2026-07-15",
+      "critical": true,
+      "notes": "~45 days ocean freight. Ship by end of May to arrive mid-July. Includes customs and final delivery."
+    },
+    {
+      "id": "menu-draft",
+      "label": "Menu plan-review version",
+      "category": "compliance",
+      "start": "2026-04-28",
+      "end": "2026-06-10",
+      "critical": true,
+      "notes": "Convert broad menu ideas into launch-menu draft for health department plan review. Separate Asian, Mexican, American, Drinks, Mini-market. Internal deadline June 10."
+    },
+    {
+      "id": "equipment-layout",
+      "label": "Equipment list / layout / warewashing / refrigeration",
+      "category": "compliance",
+      "start": "2026-04-28",
+      "end": "2026-06-10",
+      "critical": true,
+      "notes": "Equipment list, kitchen/prep/storage/cooler layout, dishwasher/warewashing details, refrigeration/food-storage info. All needed for plan-review package. Internal deadline June 10."
+    },
+    {
+      "id": "plan-review-submit",
+      "label": "Health dept plan-review submission",
+      "category": "compliance",
+      "start": "2026-06-15",
+      "end": "2026-06-20",
+      "critical": true,
+      "notes": "Submit menu, equipment list, layout/flow, warewashing/refrigeration docs, required forms and fees. If this slips past late June, early-August inspection becomes unrealistic."
+    },
+    {
+      "id": "plan-review-wait",
+      "label": "Health dept review waiting period (~45 days)",
+      "category": "compliance",
+      "start": "2026-06-20",
+      "end": "2026-08-03",
+      "critical": true,
+      "notes": "~45 day review period. Track any questions or revision requests quickly. Keep a response owner assigned."
+    },
+    {
+      "id": "buildout-install",
+      "label": "Buildout / equipment install / cleaning / testing",
+      "category": "buildout",
+      "start": "2026-06-20",
+      "end": "2026-07-31",
+      "critical": false,
+      "notes": "Continue in parallel with plan review. Includes cooler floor work, dishwasher install, cleaning, internet/camera/phone setup."
+    },
+    {
+      "id": "hiring-training",
+      "label": "Hiring / ServSafe / training / POS",
+      "category": "operations",
+      "start": "2026-06-20",
+      "end": "2026-08-15",
+      "critical": false,
+      "notes": "Hire staff, complete ServSafe certification, train team, set up POS system."
+    },
+    {
+      "id": "health-inspection",
+      "label": "Health department inspection",
+      "category": "compliance",
+      "start": "2026-08-03",
+      "end": "2026-08-07",
+      "critical": true,
+      "notes": "Target inspection window. Equipment must be installed and working. If fixes needed, address immediately and request re-check ASAP."
+    },
+    {
+      "id": "soft-opening",
+      "label": "Soft opening preparation",
+      "category": "launch",
+      "start": "2026-08-10",
+      "end": "2026-08-21",
+      "critical": false,
+      "notes": "Limited hours, controlled menu, invite/team/friends test. Run kitchen test, ordering/payment test, seating/queue/trash flow test."
+    },
+    {
+      "id": "public-opening",
+      "label": "Public opening",
+      "category": "launch",
+      "start": "2026-08-24",
+      "end": "2026-08-31",
+      "critical": true,
+      "notes": "Target: open before end of August 2026. Health clearance achieved, staff ready, operations stable, website/social updated."
+    }
+  ],
+  "milestones": [
+    { "id": "ms-bank",       "date": "2026-05-08", "label": "Company bank account open",          "critical": true  },
+    { "id": "ms-china-order","date": "2026-05-10", "label": "China furniture/materials ordered",   "critical": true  },
+    { "id": "ms-prf-utils",  "date": "2026-05-15", "label": "PRF plan submitted + utilities done", "critical": false },
+    { "id": "ms-nra",        "date": "2026-05-16", "label": "NRA Show begins",                    "critical": false },
+    { "id": "ms-equip-done", "date": "2026-05-31", "label": "All equipment ordered / China shipped","critical": true  },
+    { "id": "ms-pkg-ready",  "date": "2026-06-10", "label": "Health dept package internally ready","critical": true  },
+    { "id": "ms-submitted",  "date": "2026-06-20", "label": "Plan review submitted",              "critical": true  },
+    { "id": "ms-china-arrive","date": "2026-07-15","label": "China-sourced goods arrive",         "critical": true  },
+    { "id": "ms-inspection", "date": "2026-08-03", "label": "Health inspection window opens",     "critical": true  },
+    { "id": "ms-opening",    "date": "2026-08-31", "label": "Latest target: public opening",      "critical": true  }
+  ]
+}

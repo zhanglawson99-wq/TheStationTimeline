@@ -1,0 +1,9 @@
+{
+  "name": "the-station-timeline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive project timeline for The Station Food Market",
+  "dependencies": {
+    "@vercel/kv": "^3.0.0"
+  }
+}
