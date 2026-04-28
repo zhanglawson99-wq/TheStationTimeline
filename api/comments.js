@@ -20,8 +20,8 @@ async function getKV() {
   if (kv) return kv;
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
     try {
-      const { createClient } = await import('@vercel/kv');
-      kv = createClient({
+      const vercelKV = require('@vercel/kv');
+      kv = vercelKV.createClient({
         url: process.env.KV_REST_API_URL,
         token: process.env.KV_REST_API_TOKEN,
       });
@@ -77,7 +77,7 @@ function checkRate(ip) {
 }
 
 // --- Handler ---
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
