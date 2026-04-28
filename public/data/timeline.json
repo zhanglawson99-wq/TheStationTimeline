@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v1.2",
+    "version": "v1.3",
     "updated": "2026-04-28",
     "project": "The Station Food Market",
     "projectZh": "The Station Food Market",
@@ -181,6 +181,17 @@
       "critical": true,
       "notes": "~45 day review period. Track any questions or revision requests quickly. Keep a response owner assigned.",
       "notesZh": "约45天审查期。快速跟踪任何问题或修改要求。保持指定响应负责人。"
+    },
+    {
+      "id": "trial-cooking-service-flow",
+      "label": "Trial cooking / service flow optimization",
+      "labelZh": "试菜 / 出餐流程优化",
+      "category": "operations",
+      "start": "2026-06-20",
+      "end": "2026-08-03",
+      "critical": false,
+      "notes": "During health-department review, start trial cooking/menu testing as soon as equipment and site readiness allow. Document and optimize prep flow, cooking/station flow, expo/packing, ordering/payment handoff, pickup/customer flow, bottlenecks, timing, portioning, staffing assumptions, and vendor sourcing based on tested items.",
+      "notesZh": "卫生部门审查等待期间，在设备和现场条件允许后尽快开始试菜/菜单测试。整理并优化备餐流程、烹饪/岗位流程、出餐/打包流程、点餐/支付衔接、取餐/顾客动线、瓶颈、出餐时间、份量、人员配置假设，并根据试菜结果优化供应商采购。"
     },
     {
       "id": "buildout-install",
