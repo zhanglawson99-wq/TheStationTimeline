@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "v1.3",
-    "updated": "2026-04-28",
+    "version": "v1.4",
+    "updated": "2026-04-29",
     "project": "The Station Food Market",
     "projectZh": "The Station Food Market",
     "target": "Open before end of August 2026",
@@ -69,8 +69,8 @@
       "start": "2026-05-01",
       "end": "2026-05-15",
       "critical": false,
-      "notes": "Set up or transfer all utility and operating accounts. Must clear before NRA Show window (May 16-19).",
-      "notesZh": "设置或转移所有公用事业和运营账户。必须在NRA展会窗口（5月16-19日）前完成。"
+      "notes": "Set up or transfer all utility and operating accounts. Wintek fiber contract is confirmed; on-site walkthrough scheduled for Monday May 4, 2026, 12:30 PM - 1:30 PM. Must clear before NRA Show window (May 16-19).",
+      "notesZh": "设置或转移所有公用事业和运营账户。Wintek 光纤合同已确认；现场 walkthrough 安排在 2026年5月4日周一 12:30 PM - 1:30 PM。必须在NRA展会窗口（5月16-19日）前完成。"
     },
     {
       "id": "nra-show",
@@ -250,6 +250,7 @@
     }
   ],
   "milestones": [
+    { "id": "ms-wintek-walkthrough", "date": "2026-05-04", "label": "Wintek on-site walkthrough 12:30-1:30 PM", "labelZh": "Wintek 现场 walkthrough 12:30-1:30 PM", "critical": false },
     { "id": "ms-bank",        "date": "2026-05-08", "label": "Company bank account open",           "labelZh": "公司银行账户开通",                "critical": true  },
     { "id": "ms-china-order", "date": "2026-05-10", "label": "China furniture/materials ordered",    "labelZh": "国内家具/材料已下单",              "critical": true  },
     { "id": "ms-prf-utils",   "date": "2026-05-15", "label": "PRF plan + equipment spec direction + accounts done",  "labelZh": "PRF方案 + 设备规格方向 + 账户已完成",   "critical": true  },
