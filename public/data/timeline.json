@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v1.5",
+    "version": "v1.6",
     "updated": "2026-05-01",
     "project": "The Station Food Market",
     "projectZh": "The Station Food Market",
@@ -73,6 +73,17 @@
       "completedDate": "2026-05-01",
       "notes": "Completed per Zhang on May 1, 2026: water, electric, internet/fiber, gas, and related operating accounts are marked complete for timeline tracking. Wintek fiber contract is confirmed; on-site walkthrough scheduled for Monday May 4, 2026, 12:30 PM - 1:30 PM. Track installation/activation details separately if needed.",
       "notesZh": "根据 Zhang 2026年5月1日确认：水、电、网/光纤、气及相关运营账户在 timeline 中标记为已完成。Wintek 光纤合同已确认；现场 walkthrough 安排在 2026年5月4日周一 12:30 PM - 1:30 PM。如有需要，安装/开通细节另行跟进。"
+    },
+    {
+      "id": "edgeball-teams",
+      "label": "Edgeball Teams table tennis tournament (low-output window)",
+      "labelZh": "Edgeball Teams 乒乓球比赛（低产出窗口）",
+      "category": "operations",
+      "start": "2026-05-08",
+      "end": "2026-05-10",
+      "critical": false,
+      "notes": "Zhang and Terry will both attend the Edgeball Teams table tennis tournament from May 8 to May 10, so project execution capacity will be limited. Pull forward or push back work that requires Zhang/Terry input.",
+      "notesZh": "Zhang 和 Terry 都会在 5月8日至5月10日参加 Edgeball Teams 乒乓球比赛，因此项目执行产能会降低。需要 Zhang/Terry 参与的事项应提前或顺延。"
     },
     {
       "id": "nra-show",
@@ -253,6 +264,7 @@
   ],
   "milestones": [
     { "id": "ms-wintek-walkthrough", "date": "2026-05-04", "label": "Wintek on-site walkthrough 12:30-1:30 PM", "labelZh": "Wintek 现场 walkthrough 12:30-1:30 PM", "critical": false },
+    { "id": "ms-edgeball",   "date": "2026-05-08", "label": "Edgeball Teams tournament begins",    "labelZh": "Edgeball Teams 乒乓球比赛开始",     "critical": false },
     { "id": "ms-bank",        "date": "2026-05-08", "label": "Company bank account open",           "labelZh": "公司银行账户开通",                "critical": true  },
     { "id": "ms-china-order", "date": "2026-05-10", "label": "China furniture/materials ordered",    "labelZh": "国内家具/材料已下单",              "critical": true  },
     { "id": "ms-prf-utils",   "date": "2026-05-15", "label": "PRF plan + equipment spec direction + accounts done",  "labelZh": "PRF方案 + 设备规格方向 + 账户已完成",   "critical": true  },
