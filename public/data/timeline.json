@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "v1.4",
-    "updated": "2026-04-29",
+    "version": "v1.5",
+    "updated": "2026-05-01",
     "project": "The Station Food Market",
     "projectZh": "The Station Food Market",
     "target": "Open before end of August 2026",
@@ -69,8 +69,10 @@
       "start": "2026-05-01",
       "end": "2026-05-15",
       "critical": false,
-      "notes": "Set up or transfer all utility and operating accounts. Wintek fiber contract is confirmed; on-site walkthrough scheduled for Monday May 4, 2026, 12:30 PM - 1:30 PM. Must clear before NRA Show window (May 16-19).",
-      "notesZh": "设置或转移所有公用事业和运营账户。Wintek 光纤合同已确认；现场 walkthrough 安排在 2026年5月4日周一 12:30 PM - 1:30 PM。必须在NRA展会窗口（5月16-19日）前完成。"
+      "status": "completed",
+      "completedDate": "2026-05-01",
+      "notes": "Completed per Zhang on May 1, 2026: water, electric, internet/fiber, gas, and related operating accounts are marked complete for timeline tracking. Wintek fiber contract is confirmed; on-site walkthrough scheduled for Monday May 4, 2026, 12:30 PM - 1:30 PM. Track installation/activation details separately if needed.",
+      "notesZh": "根据 Zhang 2026年5月1日确认：水、电、网/光纤、气及相关运营账户在 timeline 中标记为已完成。Wintek 光纤合同已确认；现场 walkthrough 安排在 2026年5月4日周一 12:30 PM - 1:30 PM。如有需要，安装/开通细节另行跟进。"
     },
     {
       "id": "nra-show",

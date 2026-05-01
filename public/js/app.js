@@ -31,6 +31,8 @@
       footer: 'The Station Food Market · 项目时间线 · 内部使用',
       re: '关于：',
       criticalBadge: '⚠ 关键路径',
+      completedBadge: '✓ 已完成',
+      completedOn: '完成于 {date}',
       todayMarker: '今天',
       commentCountLabel: '{n} 条评论',
       commentCountZero: '暂无评论',
@@ -59,6 +61,8 @@
       footer: 'The Station Food Market · Project Timeline · Internal Use',
       re: 'Re: ',
       criticalBadge: '⚠ Critical Path',
+      completedBadge: '✓ Completed',
+      completedOn: 'Completed on {date}',
       todayMarker: 'TODAY',
       commentCountLabel: '{n} comments',
       commentCountZero: 'No comments',
@@ -203,11 +207,12 @@
         const tk = row.data;
         const cat = categories.find(c => c.id === tk.category);
         const el = document.createElement('div');
-        el.className = 'gantt-label-row';
+        el.className = 'gantt-label-row' + (tk.status === 'completed' ? ' completed' : '');
         el.dataset.id = tk.id;
         el.innerHTML = `
           <span class="gantt-label-dot" style="background:${cat ? cat.color : '#666'}"></span>
           <span class="gantt-label-text">${tl(tk, 'label')}</span>
+          ${tk.status === 'completed' ? `<span class="gantt-label-completed" title="${t('completedBadge')}">✓</span>` : ''}
           ${tk.critical ? '<span class="gantt-label-critical">●</span>' : ''}
         `;
         el.addEventListener('click', () => openDetail(tk.id));
@@ -283,12 +288,12 @@
         rowEl.className = 'gantt-row';
 
         const bar = document.createElement('div');
-        bar.className = 'gantt-bar' + (tk.critical ? ' critical' : '');
+        bar.className = 'gantt-bar' + (tk.critical ? ' critical' : '') + (tk.status === 'completed' ? ' completed' : '');
         bar.style.left = barLeft + 'px';
         bar.style.width = barWidth + 'px';
         bar.style.background = cat ? cat.color : '#666';
         bar.dataset.id = tk.id;
-        bar.textContent = tl(tk, 'label');
+        bar.textContent = (tk.status === 'completed' ? '✓ ' : '') + tl(tk, 'label');
 
         bar.addEventListener('click', () => openDetail(tk.id));
         bar.addEventListener('mouseenter', (e) => showTooltip(e, tk));
@@ -396,8 +401,9 @@
     const notes = tl(task, 'notes');
 
     tooltipEl.innerHTML = `
-      <div class="gantt-tooltip-title">${tl(task, 'label')}</div>
+      <div class="gantt-tooltip-title">${task.status === 'completed' ? '✓ ' : ''}${tl(task, 'label')}</div>
       <div class="gantt-tooltip-dates">${startDate} → ${endDate} (${t('days', { n: days })})</div>
+      ${task.status === 'completed' ? `<div class="gantt-tooltip-completed">${task.completedDate ? t('completedOn', { date: formatDate(parseDate(task.completedDate)) }) : t('completedBadge')}</div>` : ''}
       ${notes ? `<div class="gantt-tooltip-notes">${notes}</div>` : ''}
     `;
 
@@ -446,6 +452,7 @@
       <div class="detail-dates">${startDate} → ${endDate}</div>
       <div class="detail-duration">${t('days', { n: days })}</div>
       ${task.critical ? `<div class="detail-critical-badge">${t('criticalBadge')}</div>` : ''}
+      ${task.status === 'completed' ? `<div class="detail-completed-badge">${task.completedDate ? t('completedOn', { date: formatDate(parseDate(task.completedDate)) }) : t('completedBadge')}</div>` : ''}
       ${notes ? `<div class="detail-notes">${notes}</div>` : ''}
     `;
 
